@@ -1,3 +1,4 @@
+# Visual Studiocache/options directory
 .vs/
 
 #obj
@@ -5,3 +6,6 @@ NuGetPackagesBackup/obj/
 
 #bin
 NuGetPackagesBackup/bin/
+
+#build
+build/*
