@@ -9,3 +9,6 @@ NuGetPackagesBackup/bin/
 
 #build
 build/*
+
+#tools
+tools/NuGetPackagesBackup/Log.txt
