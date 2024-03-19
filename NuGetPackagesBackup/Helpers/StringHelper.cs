@@ -24,22 +24,28 @@ namespace NuGetPackagesBackup.Helpers
             JsonNode data = JsonSerializer.Deserialize<JsonNode>(result);
 
             JsonNode projects = data["projects"];
+;
             if (projects is JsonArray && projects.AsArray().Count == 0)
                 return nugetVersions;
 
-            JsonNode frameworks = projects[0]["frameworks"];
+            foreach (JsonNode project in projects.AsArray())
+            {
+                JsonNode frameworks = project["frameworks"];
 
-            if (frameworks is JsonArray && frameworks.AsArray().Count == 0)
-                return nugetVersions;
+                if (frameworks is JsonArray && frameworks.AsArray().Count == 0)
+                    continue;
 
-            JsonNode topLevelPackages = frameworks[0]["topLevelPackages"];
-            if (topLevelPackages is JsonArray && topLevelPackages.AsArray().Count != 0)
-                FillNugetVersions(nugetVersions, topLevelPackages.AsArray());
+                foreach (JsonNode framework in frameworks.AsArray())
+                {
+                    JsonNode topLevelPackages = framework["topLevelPackages"];
+                    if (topLevelPackages is JsonArray && topLevelPackages.AsArray().Count != 0)
+                        FillNugetVersions(nugetVersions, topLevelPackages.AsArray());
 
-            JsonNode transitivePackages = frameworks[0]["transitivePackages"];
-            if (transitivePackages is JsonArray && transitivePackages.AsArray().Count != 0)
-                FillNugetVersions(nugetVersions, transitivePackages.AsArray());
-
+                    JsonNode transitivePackages = framework["transitivePackages"];
+                    if (transitivePackages is JsonArray && transitivePackages.AsArray().Count != 0)
+                        FillNugetVersions(nugetVersions, transitivePackages.AsArray());
+                }
+            }
             return nugetVersions;
         }
 
