@@ -18,6 +18,9 @@ namespace NuGetPackagesBackup.Helpers
             Dictionary<string, List<string>> nugetVersions = new Dictionary<string, List<string>>();
             List<string> strings = GetTextByLineAndCut(jasonText, areaMarker);
             string result = string.Join("\n", strings);
+            if (String.IsNullOrEmpty(result))
+                return nugetVersions;
+
             JsonNode data = JsonSerializer.Deserialize<JsonNode>(result);
 
             JsonNode projects = data["projects"];
